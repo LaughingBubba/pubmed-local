@@ -4,7 +4,7 @@ Reliably download pubmed baseline and updates from the NCBI FTP server.
 
 Every file is checked to ensure the downloaded size of the file matches the size on the FTP server. You can optionally check the md5 hash of the files downloaded.  
 
-## NOTE
+### NOTE
 Written using Python 3.10.1
 
 ## Installation and Execution 
