@@ -3,6 +3,7 @@ import os, io, fnmatch
 import sqlite3
 import hashlib
 import gzip, shutil
+import configparser
 
 from ftplib import FTP
 from functools import partial
@@ -42,7 +43,7 @@ def chk_pubmed(host, host_dir, pubtype, conn):
 
   size = 0
   for name, facts in ftp.mlsd():
-    print("name "+name+" size "+facts["size"])
+    print ("name " + name + " size " + facts["size"])
     file_size = int(facts["size"])
     size += int(facts["size"])
     sql = '''
@@ -62,7 +63,7 @@ def chk_pubmed(host, host_dir, pubtype, conn):
 ## GET / DOWNLOAD
 def get_pubmed(host, host_dir, local_dir, pubtype, conn):
   print('>>> GETTING BASE FILES <<<')
-
+  
   # list the pubtype files to get
   c = conn.cursor()
   u = conn.cursor()
@@ -76,13 +77,13 @@ def get_pubmed(host, host_dir, local_dir, pubtype, conn):
   '''.format(pubtype=pubtype)
   c.execute(sql)
   rows = c.fetchall()
-
+  
   # FTP connect
   ftp = FTP(host)
   ftp.set_pasv(False)
   ftp.login(user='anonymous', passwd='hb@dnaiq.com')
   ftp.cwd(host_dir)
-
+  
   for row in rows:
     # print('name:', row[0], ' dir: ', row[1])
 
@@ -91,7 +92,7 @@ def get_pubmed(host, host_dir, local_dir, pubtype, conn):
 
     if not os.path.isfile(local_file):
       print('Retreiving ' + host_file)
-
+    
       ftp.retrbinary("RETR " + host_file, open(local_file, 'wb').write)
       rtv = datetime.now()
       sql = '''
@@ -108,17 +109,17 @@ def get_pubmed(host, host_dir, local_dir, pubtype, conn):
   c.close()
   u.close()
   ftp.quit()
-
+  
   return
 
 ## VALIDATE & EXPAND
 def vld_pubmed(local_dir, pubtype, conn):
   print('>>> VALIDATING BASE FILES <<<')
-
+  
   # list the pubtype files to validate
   c = conn.cursor()
   u = conn.cursor()
-
+  
   sql = '''
     SELECT name, host_dir 
     FROM pubmed_ftp 
@@ -131,7 +132,7 @@ def vld_pubmed(local_dir, pubtype, conn):
   
   c.execute(sql)
   rows = c.fetchall()
-
+  
   # validate and expand
   for row in rows:
     local_file = local_dir + row[0]
