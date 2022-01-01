@@ -14,12 +14,12 @@ Written using Python 3.10.1
 - Update config as required. NOTE: The NCBI docs state that you should your use your email address as the password. 
 - Initialise the BASE and UPDATE list of files to FTP   
 `python ftp_init.py base`   
-`python ftp_init.py update` 
-- Then run the scripts to get the files (you can run them in separate terminals simultaneously)
-`python ftp_getfiles.py base`   
+`python ftp_init.py update`   
+- Then run the scripts to get the files (you can run them in separate terminals simultaneously)   
+`python ftp_getfiles.py base`      
 `python ftp_getfiles.py update`
-- When they've run to completion you check the md5 hashes
-`python check_md5.py base` 
+- When they've run to completion you check the md5 hashes   
+`python check_md5.py base`   
 `python check_md5.py update` 
 
 ## Observations
