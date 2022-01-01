@@ -1,0 +1,14 @@
+# Rename this to pubmed-db.cnf
+# Update this file to suit your needs
+
+[pubmed]
+ftp_host = ftp.ncbi.nlm.nih.gov
+ftp_user = anonymous
+ftp_password = your@email.com
+base_folder = /pubmed/baseline/
+updates_folder = /pubmed/updatefiles/
+
+[data]
+control_db = ./data/pubmed.ftp.sqlite
+downloads = ./data/downloads/
+xml = ./data/xml/
