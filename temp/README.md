@@ -1,1 +1,0 @@
-This folder will be deleted in the next release

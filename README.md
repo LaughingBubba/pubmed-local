@@ -26,6 +26,7 @@ Written using Python 3.10.1
 - Changing FTP mode to active (instead of passive) has greatly increased reliability of the connection and subsequent down downloads
 - HOWEVER: Many files have local file sizes that don't match the listed size on the FTP server. When using PSAV the mismatch file sizes would often be multiples of the base size.
 - The most number of consecutive successful downloads with PASV was ~100, usually less.
+- The majority of the last 3 to 4 hundred xml files contain duplicates.
 
 ## Installing Latest Python Locally for Mac
 
@@ -35,6 +36,11 @@ https://opensource.com/article/19/5/python-3-default-mac
 https://github.com/pyenv/pyenv  
 https://medium.com/geekculture/setting-up-python-environment-in-macos-using-pyenv-and-pipenv-116293da8e72
 NOTE: check .zshrc or .bashrc for pyenv shims PATH export 
+
+## PUBMED Architecture
+
+## Solr
+
 
 ## FTP Vagaries
 https://docs.python.org/3/library/ftplib.html#   
@@ -52,3 +58,23 @@ https://aioftp.readthedocs.io/client_api.html
 https://aioftp.readthedocs.io/client_tutorial.html   
 
 https://pypi.org/project/parfive/   
+
+## FTP
+
+### Node
+https://github.com/patrickjuchli/basic-ftp   
+https://github.com/mscdex/node-ftp   
+https://github.com/sergi/jsftp   
+
+## Multiprocessing
+
+### Node
+https://stackoverflow.com/questions/47997812/python-multiprocessing-in-node-js   
+https://dzone.com/articles/understanding-execfile-spawn-exec-and-fork-in-node   
+https://www.npmjs.com/package/multiprocessing   
+https://github.com/scottjr632/node-multiprocessing  
+
+### Python
+https://stackoverflow.com/questions/20887555/dead-simple-example-of-using-multiprocessing-queue-pool-and-locking   
+https://www.journaldev.com/15631/python-multiprocessing-example   
+https://docs.python.org/3/library/multiprocessing.html   
