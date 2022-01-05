@@ -13,10 +13,10 @@ async function main () {
 
 	console.log(chalk.black.bgWhiteBright(`Start: ${new Date()}`))
 
-	console.log(process.env.xml)
-	const pubtype = 'BASE'
+	console.log(process.env.pubmed_db_xml)
+	const pubtype = 'UPDATE'
 	
-	const db = new Database(process.env.control_db, { verbose: console.log })
+	const db = new Database(process.env.pubmed_db_control_db, { verbose: console.log })
 
 	let sql = `	
 		SELECT trim(name, '.gz') as name
@@ -47,7 +47,9 @@ async function load (xmlfile) {
 		
 		var message = ''
 		var errorApend = ''
-		var inserted = 0
+		var upserted = 0
+		var modified = 0
+		var removed = 0
 
 		const options = {
 			ignoreAttributes : false,
@@ -59,7 +61,7 @@ async function load (xmlfile) {
 		
 		// prepare for mongo connection
 		const MongoClient = require('mongodb').MongoClient
-		const client = new MongoClient(process.env.mongo_uri, { useUnifiedTopology: true })
+		const client = new MongoClient(process.env.pubmed_db_mongo_uri, { useUnifiedTopology: true })
 		
 		function start() {
 			startTime = new Date()
@@ -82,7 +84,7 @@ async function load (xmlfile) {
   			var seconds = Math.round(timeDiff)
   			var minutes = Math.round(seconds / 60, 2)
   			// console.log(chalk.blue(`file: ${chalk.yellow(x)} duration ${chalk.yellow(`${hh}:${mm}:${ss}`)} h:m:s`))
-  			message = chalk.blue(`file: ${chalk.yellow(xmlfile)} inserted: ${chalk.yellow(inserted)} duration ${chalk.yellow(`${hh}:${mm}:${ss}`)} hh:mm:ss ${errorApend}`)
+  			message = chalk.blue(`file: ${chalk.yellow(xmlfile)} upserted: ${chalk.yellow(upserted)} modified: ${chalk.yellow(modified)} removed: ${chalk.yellow(removed)} duration ${chalk.yellow(`${hh}:${mm}:${ss}`)} hh:mm:ss ${errorApend}`)
 			console.log(message)
 		}
 		
@@ -95,30 +97,69 @@ async function load (xmlfile) {
 			const db = client.db('pubmed')
 			const docs = db.collection('articles')
 			
-			let bulk = docs.initializeUnorderedBulkOp()
-			
-			let file = process.env.xml + xmlfile
+			let file = process.env.pubmed_db_xml + xmlfile
 			
 			fs.readFile(file)
 			.then( async function(data) {
-				let jsonObj = parser.parse(data);
 				
-				for (const index in jsonObj.PubmedArticleSet.PubmedArticle) {  
+				let jsonObj = parser.parse(data)
 					
-					let doc = jsonObj.PubmedArticleSet.PubmedArticle[index].MedlineCitation
-					doc._id = jsonObj.PubmedArticleSet.PubmedArticle[index].MedlineCitation.PMID.value
-					doc.PubmedData = jsonObj.PubmedArticleSet.PubmedArticle[index].PubmedData
-					doc.xmlfile = xmlfile
+				// console.log(chalk.yellow("prepping deletions"))
+				
+				if (
+					typeof jsonObj.PubmedArticleSet.DeleteCitation != 'undefined' && 
+					typeof jsonObj.PubmedArticleSet.DeleteCitation.PMID != 'undefined' && 
+					jsonObj.PubmedArticleSet.DeleteCitation.PMID.length > 0) {
 					
-					bulk.find( {_id: doc._id} ).upsert().replaceOne( doc )	
+					const bulkDel = docs.initializeUnorderedBulkOp()
+					
+					for (const index in jsonObj.PubmedArticleSet.DeleteCitation.PMID) {
+						
+						let doc = {}
+						doc.PMID = {}
+						doc.PMID.value = jsonObj.PubmedArticleSet.DeleteCitation.PMID[index].value
+						doc.PMID.Version = jsonObj.PubmedArticleSet.DeleteCitation.PMID[index].Version
+						
+						// console.log(JSON.stringify(doc))
+						bulkDel.find( doc ).deleteOne()
+					}
+					
+					let res = await bulkDel.execute().catch(err => {
+						errorApend = chalk.yellow(`err: ${err})`)
+						return {nRemoved: 0}
+					})
+					
+					// console.log(chalk.yellow("bulk del done"))
+					removed = res.nRemoved	
 				}
 				
-				let res = await bulk.execute().catch(err => {
-					errorApend = chalk.yellow(`err: ${err})`)
-					return {nInserted: 0}
-				})
+				// console.log(chalk.yellow("prepping upserts"))
+				if (
+					typeof jsonObj.PubmedArticleSet.PubmedArticle != 'undefined' && 
+					jsonObj.PubmedArticleSet.PubmedArticle.length > 0) {
+					
+					const bulkUpd = docs.initializeUnorderedBulkOp()
+					
+					for (const index in jsonObj.PubmedArticleSet.PubmedArticle) {  
+										
+						let doc = jsonObj.PubmedArticleSet.PubmedArticle[index].MedlineCitation
+						doc._id = jsonObj.PubmedArticleSet.PubmedArticle[index].MedlineCitation.PMID.value
+						doc.PubmedData = jsonObj.PubmedArticleSet.PubmedArticle[index].PubmedData
+						doc.xmlfile = xmlfile
+						
+						bulkUpd.find( {_id: doc._id} ).upsert().replaceOne( doc )	
+					}
+					
+					let res = await bulkUpd.execute().catch(err => {
+						errorApend = chalk.yellow(`err: ${err})`)
+						return {nUpserted: 0, nModified: 0}
+					})
+					
+					// console.log(chalk.yellow("bulk upsert done"))
+					upserted = res.nUpserted
+					modified = res.nModified	
+				}
 				
-				inserted = res.nInserted
 				client.close()
 				end()
 				resolve()
