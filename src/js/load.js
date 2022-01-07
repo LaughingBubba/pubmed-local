@@ -1,33 +1,30 @@
 // pubmed22n0001.xml Start: Sun Jan 02 2022 23:53:19
-const fs = require('fs').promises
-const chalk = require('chalk')
-const {XMLParser} = require('fast-xml-parser')
-const sqlite3 = require('sqlite3').verbose()
-const Database = require('better-sqlite3')
-
 require('dotenv').config()
+const fs = require('fs').promises
+const {XMLParser} = require('fast-xml-parser')
+const Database = require('better-sqlite3')
+const yellow = require('chalk').yellow
+const blue = require('chalk').blue
+const black = require('chalk').black
+const green = require('chalk').green
 
 main()
 
 async function main () {
 
-	console.log(chalk.black.bgWhiteBright(`Start: ${new Date()}`))
-
-	console.log(process.env.pubmed_db_xml)
-	const pubtype = 'UPDATE'
+	console.log(black.bgWhiteBright(`Start: ${new Date()}`))
 	
 	const db = new Database(process.env.pubmed_db_control_db, { verbose: console.log })
 
 	let sql = `	
 		SELECT trim(name, '.gz') as name
 		FROM pubmed_ftp
-		WHERE pubtype = '${pubtype}'
-		  and name like '%gz'
-		  and size = size_dl
+		WHERE name like '%gz'
+		  and sts = 'NEW'
 		ORDER BY name
 	`
 
-	const res = db.prepare(sql);
+	const res = db.prepare(sql)
 	
 	for (const xmlfile of res.iterate()) {
 		try {
