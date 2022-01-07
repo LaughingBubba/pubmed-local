@@ -14,28 +14,40 @@ async function main () {
 
 	console.log(black.bgWhiteBright(`Start: ${new Date()}`))
 	
-	const db = new Database(process.env.pubmed_db_control_db, { verbose: console.log })
-
+	const db = new Database(process.env.pubmed_db_control_db, { /* verbose: console.log */ })
 	let sql = `	
-		SELECT trim(name, '.gz') as name
+		SELECT name
 		FROM pubmed_ftp
 		WHERE name like '%gz'
 		  and sts = 'NEW'
 		ORDER BY name
 	`
-
-	const res = db.prepare(sql)
+	const rows = db.prepare(sql).all()
 	
-	for (const xmlfile of res.iterate()) {
+	for (const row of rows) {
 		try {
-			await load(xmlfile.name)	  
+			if (await md5_ok(row.name)) {
+				delete_me = await unzip(row.name)
+				await load(delete_me)
+				await fs.unlink(delete_me)
+				sql = `
+					UPDATE pubmed_ftp
+					set sts='LOADED'
+					WHERE name='${row.name}'
+				`
+				const res = db.prepare(sql).run()
+			} else {
+				err = `md5 check failed`
+				console.log(blue(`${err} for ${yellow(row.name)}`))
+				break	
+			}  
 		} catch (err) {
 			console.log("sql-loop >>>", err)
 		}
 	}	
 
 	db.close()
-	console.log(chalk.black.bgWhiteBright(`End: ${new Date()}`))	
+	console.log(black.bgWhiteBright(`End: ${new Date()}`))	
 }
 
 async function load (xmlfile) {
@@ -53,8 +65,8 @@ async function load (xmlfile) {
 			attributeNamePrefix : "",
 			textNodeName: "value",
 			allowBooleanAttributes: true
-		};
-		const parser = new XMLParser(options);
+		}
+		const parser = new XMLParser(options)
 		
 		// prepare for mongo connection
 		const MongoClient = require('mongodb').MongoClient
@@ -65,23 +77,22 @@ async function load (xmlfile) {
 		}
 		
 		function end() {
-  			endTime = new Date()
-  			var timeDiff = endTime - startTime //in ms
-  			var msec = timeDiff
-  			
-  			var hh = Math.floor(msec / 1000 / 60 / 60)
-  			msec -= hh * 1000 * 60 * 60
-  			
-  			var mm = Math.floor(msec / 1000 / 60)
-  			msec -= mm * 1000 * 60
-  			
-  			var ss = Math.floor(msec / 1000)
-  			msec -= ss * 1000 
-  			
-  			var seconds = Math.round(timeDiff)
-  			var minutes = Math.round(seconds / 60, 2)
-  			// console.log(chalk.blue(`file: ${chalk.yellow(x)} duration ${chalk.yellow(`${hh}:${mm}:${ss}`)} h:m:s`))
-  			message = chalk.blue(`file: ${chalk.yellow(xmlfile)} upserted: ${chalk.yellow(upserted)} modified: ${chalk.yellow(modified)} removed: ${chalk.yellow(removed)} duration ${chalk.yellow(`${hh}:${mm}:${ss}`)} hh:mm:ss ${errorApend}`)
+			endTime = new Date()
+			var timeDiff = endTime - startTime //in ms
+			var msec = timeDiff
+			
+			var hh = Math.floor(msec / 1000 / 60 / 60)
+			msec -= hh * 1000 * 60 * 60
+			
+			var mm = Math.floor(msec / 1000 / 60)
+			msec -= mm * 1000 * 60
+			
+			var ss = Math.floor(msec / 1000)
+			msec -= ss * 1000 
+			
+			var seconds = Math.round(timeDiff)
+			var minutes = Math.round(seconds / 60, 2)
+			message = blue(`file: ${yellow(xmlfile)} upserted: ${yellow(upserted)} modified: ${yellow(modified)} removed: ${yellow(removed)} duration ${yellow(`${hh}:${mm}:${ss}`)} hh:mm:ss ${errorApend}`)
 			console.log(message)
 		}
 		
@@ -91,17 +102,13 @@ async function load (xmlfile) {
 			
 			if (err) reject(err)
 			
-			const db = client.db('pubmed')
-			const docs = db.collection('articles')
+			const db = client.db(process.env.pubmed_db_mongo_dbname)
+			const docs = db.collection(process.env.pubmed_db_mongo_collection)
 			
-			let file = process.env.pubmed_db_xml + xmlfile
-			
-			fs.readFile(file)
+			fs.readFile(xmlfile)
 			.then( async function(data) {
 				
 				let jsonObj = parser.parse(data)
-					
-				// console.log(chalk.yellow("prepping deletions"))
 				
 				if (
 					typeof jsonObj.PubmedArticleSet.DeleteCitation != 'undefined' && 
@@ -122,15 +129,13 @@ async function load (xmlfile) {
 					}
 					
 					let res = await bulkDel.execute().catch(err => {
-						errorApend = chalk.yellow(`err: ${err})`)
+						errorApend = yellow(`err: ${err})`)
 						return {nRemoved: 0}
 					})
 					
-					// console.log(chalk.yellow("bulk del done"))
 					removed = res.nRemoved	
 				}
 				
-				// console.log(chalk.yellow("prepping upserts"))
 				if (
 					typeof jsonObj.PubmedArticleSet.PubmedArticle != 'undefined' && 
 					jsonObj.PubmedArticleSet.PubmedArticle.length > 0) {
@@ -148,11 +153,10 @@ async function load (xmlfile) {
 					}
 					
 					let res = await bulkUpd.execute().catch(err => {
-						errorApend = chalk.yellow(`err: ${err})`)
+						errorApend = yellow(`err: ${err})`)
 						return {nUpserted: 0, nModified: 0}
 					})
 					
-					// console.log(chalk.yellow("bulk upsert done"))
 					upserted = res.nUpserted
 					modified = res.nModified	
 				}
@@ -165,5 +169,47 @@ async function load (xmlfile) {
 				reject(error)
 			})
 		})
+	})
+}
+
+function md5_ok (file) {
+	const fs = require('fs')
+	const crypto = require('crypto')
+	return new Promise( async (resolve, reject) => {
+		try {
+			gzip_file = process.env.pubmed_db_downloads + file
+			md5_file  = gzip_file + '.md5'
+			
+			const buff = fs.readFileSync(md5_file, 'UTF-8')
+			const expectedMD5 = buff.split("=")[1].trim()
+			
+			const buff2 = fs.readFileSync(gzip_file)
+			const hashSum = crypto.createHash('md5').update(buff2)
+			const actualMD5 = hashSum.digest('hex')		
+			resolve((expectedMD5===actualMD5))	
+		} catch (err) {
+			reject(err)
+		}
+	})
+}
+
+function unzip (file) {
+	const fs = require('fs')
+	const Gunzip = require('minizlib').Gunzip
+	
+	xmlFile = file.replace('.gz','')
+	
+	return new Promise( async (resolve, reject) => {
+		try {
+			const input = fs.createReadStream(process.env.pubmed_db_downloads + file)
+			const output = fs.createWriteStream(process.env.pubmed_db_xml + xmlFile)
+			
+			const decode = new Gunzip()
+			
+			input.pipe(decode).pipe(output)
+			output.on('finish', () => resolve(process.env.pubmed_db_xml + xmlFile))			
+		} catch (err) {
+			reject(err)
+		}
 	})
 }

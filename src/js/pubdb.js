@@ -11,7 +11,7 @@ const INIT = 'INIT'
 
 main()
 
-async function main () {
+function main () {
 	
 	init_dbs()
 	var pubtype = ''
@@ -26,21 +26,19 @@ async function main () {
 
 	if (pubtype != BASE && pubtype != UPDATE && pubtype != INIT) {
 		console.log("pubtype value must be BASE, UPDATE or INIT")
+		
 	} else {
 		console.log(`running in ${pubtype} mode`)
 		if (pubtype == INIT) {
 			run(BASE)
-			run(UPDATE)	
+			run(UPDATE)
 		} else {
 			run(pubtype)
 		}
-		
-		// load()
-		
 	}
 }
 
-function run () {
+function run (pubtype) {
 	start()
 	var FTPS = require('ftps')
 	var ftps = new FTPS({
@@ -56,22 +54,61 @@ function run () {
 	})
 	ftps.mirror({
 	  remoteDir: (pubtype === UPDATE) ? process.env.pubmed_db_ftp_updates : process.env.pubmed_db_ftp_base, 
-	  localDir: process.env.pubmed_db_test + 'downloads/', 
+	  localDir: process.env.pubmed_db_downloads, 
 	  parallel: 3, 
 	  upload: false, 
 	}).exec((err, res) => {
 		if (err) {
-			console.log(err)	
+			console.log("error", err)	
 		} else {
-			if (!res.error) {
-				console.log(res.error)
+			if (res.error != null) {
+				console.log("res.error", res.error)
 			} else {
-				console.log(res)
+				update_control(pubtype)
+				console.log((res.data == '') ? 'ftp mirroring done' : data) 
 			}
 		}
 		end()
 	})
 }
+
+async function init_dbs () {
+	const db = new Database(process.env.pubmed_db_control_db, { /* verbose: console.log */ })
+	let sql = `	
+		CREATE TABLE IF NOT EXISTS pubmed_ftp (
+		  name TEXT,
+		  size INT,
+		  pubtype TEXT,
+		  sts TEXT,
+		  err TEXT,
+		  PRIMARY KEY (name)
+		);
+	`
+	const res = db.prepare(sql).run()	
+	db.close()
+}
+
+function update_control (pubtype) {
+	const dirTree = require("directory-tree")
+	const db = new Database(process.env.pubmed_db_control_db, { /* verbose: console.log */ })
+	
+	const tree = dirTree(process.env.pubmed_db_downloads, {
+		attributes:['type', 'size'],
+		extensions: /\.(gz|md5)$/
+	})
+	for (item of tree.children) {
+		if (typeof item.type == 'undefined' || item.type == 'file') {
+			let sql = `
+				INSERT OR IGNORE INTO pubmed_ftp
+					(name, pubtype, size, sts) 
+			  	VALUES('${item.name}', '${pubtype}', ${item.size}, 'NEW');
+			`
+			const res = db.prepare(sql).run()		
+		}	
+	}
+	db.close()
+}
+
 function start() {
 	startTime = new Date()
 }
@@ -95,20 +132,4 @@ function end() {
 	  // console.log(chalk.blue(`file: ${chalk.yellow(x)} duration ${chalk.yellow(`${hh}:${mm}:${ss}`)} h:m:s`))
 	  message = blue(`duration ${yellow(`${hh}:${mm}:${ss}`)} hh:mm:ss`)
 	console.log(message)
-}
-
-async function init_dbs () {
-	const db = new Database(pprocess.env.pubmed_db_control_db, { /* verbose: console.log */ })
-	let sql = `	
-		CREATE TABLE IF NOT EXISTS pubmed_ftp (
-		  name TEXT,
-		  size INT,
-		  pubtype TEXT,
-		  sts TEXT,
-		  err TEXT,
-		  PRIMARY KEY (host_dir, name)
-		);
-	`
-	const res = db.prepare(sql).run()	
-	db.close()
 }

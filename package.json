@@ -23,6 +23,7 @@
     "basic-ftp": "^4.6.6",
     "better-sqlite3": "^7.4.6",
     "chalk": "^4.1.2",
+    "directory-tree": "^3.0.1",
     "dotenv": "^10.0.0",
     "fast-xml-parser": "^4.0.0-beta.8",
     "fastparallel": "^2.4.1",
