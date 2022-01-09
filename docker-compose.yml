@@ -13,8 +13,14 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${pubmed_db_mongo_user}
       MONGO_INITDB_ROOT_PASSWORD: ${pubmed_db_mongo_password}
+      MONGO_INITDB_DATABASE: ${pubmed_db_mongo_dbname}
+      MONGO_REPLICA_SET_NAME: rs0
+      MONGODB_REPLICA_SET_MODE: primary
+      # rs.initiate({_id : 'rs0', members: [{ _id : 0, host : "localhost:27017" }]})
+    command: ["--keyFile", "/opt/keyfile/keyfile", "--replSet", "rs0", "--bind_ip_all"]
     volumes:
         - /Volumes/JS-EVO970-plus/pubmed/mongo:/data/db
+        - ./:/opt/keyfile/
         
   solr:
     env_file:

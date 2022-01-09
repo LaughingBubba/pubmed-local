@@ -42,16 +42,26 @@ NOTE: check .zshrc or .bashrc for pyenv shims PATH export
 ## Mongo OpLog
 https://www.npmjs.com/package/mongo-oplog   
 
-## Mogo-Solr Sync
+## Mongo Docker single node replica set
+https://dev.to/sntnupl/how-to-setup-a-mongodb-replica-set-for-development-using-docker-1de   
+https://stackoverflow.com/questions/61486024/mongo-container-with-a-replica-set-with-only-one-node-in-docker-compose   
+https://gist.github.com/asoorm/7822cc742831639c93affd734e97ce4f   
+https://zgadzaj.com/development/docker/docker-compose/turning-standalone-mongodb-server-into-a-replica-set-with-docker-compose   
+
+
+## Mongo-Solr Sync
 https://topic.alibabacloud.com/a/solr-integrates-with-mongodb-real-time-incremental-indexing-__java_1_45_20255015.html   
 https://blog.toadworld.com/2017/02/03/indexing-mongodb-data-in-apache-solr   
 https://itnext.io/apache-solr-because-your-database-is-not-a-search-engine-57705352df8a   
-https://github.com/yougov/mongo-connector/wiki/Usage%20with%20Solr  
+https://github.com/yougov/mongo-connector/wiki/Usage%20with%20Solr   
+https://stackoverflow.com/questions/47309467/solr-with-mongodb-connection   
+https://stackoverflow.com/questions/61486024/mongo-container-with-a-replica-set-with-only-one-node-in-docker-compose   
 
 ## Solr
 https://solr.apache.org/   
 https://hub.docker.com/_/solr   
 https://blog.toadworld.com/2017/02/03/indexing-mongodb-data-in-apache-solr   
+https://github.com/docker-solr/docker-solr/blob/master/README.md   
 
 https://www.npmjs.com/package/solr-client   
 https://github.com/lbdremy/solr-node-client#readme   
