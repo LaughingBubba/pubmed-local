@@ -3,19 +3,23 @@ version: '3.1'
 services:
 
   mongo:
-    platform: linux/arm64/v8
-    image: mongo
+    env_file:
+      - .env
+    platform: ${pubmed_db_docker_platform}
+    image: mongo:5.0.5
     restart: always
     ports:
       - 27018:27017
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: access
+      MONGO_INITDB_ROOT_USERNAME: ${pubmed_db_mongo_user}
+      MONGO_INITDB_ROOT_PASSWORD: ${pubmed_db_mongo_password}
     volumes:
         - /Volumes/JS-EVO970-plus/pubmed/mongo:/data/db
         
   solr:
-    platform: linux/arm64/v8
+    env_file:
+      - .env    
+    platform: ${pubmed_db_docker_platform}
     image: solr:8.11
     restart: always
     ports:
