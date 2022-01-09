@@ -8,11 +8,11 @@ const blue = require('chalk').blue
 const black = require('chalk').black
 const green = require('chalk').green
 
-main()
+// main()
 
 async function main () {
 
-	console.log(black.bgWhiteBright(`Start: ${new Date()}`))
+	console.log(black.bgWhiteBright(`Loading start: ${new Date()}`))
 	
 	const db = new Database(process.env.pubmed_db_control_db, { /* verbose: console.log */ })
 	let sql = `	
@@ -47,7 +47,7 @@ async function main () {
 	}	
 
 	db.close()
-	console.log(black.bgWhiteBright(`End: ${new Date()}`))	
+	console.log(black.bgWhiteBright(`Loading end: ${new Date()}`))	
 }
 
 async function load (xmlfile) {
@@ -213,3 +213,5 @@ function unzip (file) {
 		}
 	})
 }
+
+module.exports.run = main

@@ -39,6 +39,24 @@ NOTE: check .zshrc or .bashrc for pyenv shims PATH export
 
 ## PUBMED Architecture
 
+## Mongo OpLog
+https://www.npmjs.com/package/mongo-oplog   
+
+## Mogo-Solr Sync
+https://topic.alibabacloud.com/a/solr-integrates-with-mongodb-real-time-incremental-indexing-__java_1_45_20255015.html   
+https://blog.toadworld.com/2017/02/03/indexing-mongodb-data-in-apache-solr   
+https://itnext.io/apache-solr-because-your-database-is-not-a-search-engine-57705352df8a   
+https://github.com/yougov/mongo-connector/wiki/Usage%20with%20Solr  
+
 ## Solr
-https://solr.apache.org/
-https://hub.docker.com/_/solr
+https://solr.apache.org/   
+https://hub.docker.com/_/solr   
+https://blog.toadworld.com/2017/02/03/indexing-mongodb-data-in-apache-solr   
+
+https://www.npmjs.com/package/solr-client   
+https://github.com/lbdremy/solr-node-client#readme   
+
+https://dev.to/sntnupl/how-to-setup-a-mongodb-replica-set-for-development-using-docker-1de   
+https://zgadzaj.com/development/docker/docker-compose/turning-standalone-mongodb-server-into-a-replica-set-with-docker-compose   
+https://stackoverflow.com/questions/61486024/mongo-container-with-a-replica-set-with-only-one-node-in-docker-compose   
+
