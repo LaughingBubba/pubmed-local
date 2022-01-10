@@ -1,26 +1,34 @@
 # pubmed-db
 
-Reliably download pubmed baseline and updates from the NCBI FTP server. 
+Reliably download pubmed baseline and updates from the NCBI FTP server and load to MongoDB.
 
-Every file is checked to ensure the downloaded size of the file matches the size on the FTP server. You can optionally check the md5 hash of the files downloaded.  
+Every file's md5 is checked to ensure they have downloaded correctly. Failures will trigger re-mirroring of the affected files and their md5's.
 
 ### NOTE
 Written using Node v17.3.0
 
 ## Installation and Execution 
+
+Assumptions:
+- Running on M1 platform (if not, change `pubmed_db_docker_platform` value in `.env` to `linux/amd64`)
+- Docker Engine is already installed
+
+Steps:
+- Install node   
+`brew update && brew install node`
+- Install lftp (required by node-ftps npm package)   
+`brew install lftp`
 - Clone this repo
-- Change directories to you local version of this repo
+- Change directory to your local version of this repo   
+`cd ./pubmed-db`
 - Rename the example `.env.example` to `.env`
-- Update config as required. NOTE: The NCBI docs state that you should your use your email address as the password. 
-- Initialise the BASE and UPDATE list of files to FTP   
-`python ftp_init.py base`   
-`python ftp_init.py update`   
-- Then run the scripts to get the files (you can run them in separate terminals simultaneously)   
-`python ftp_getfiles.py base`      
-`python ftp_getfiles.py update`
-- When they've run to completion you check the md5 hashes   
-`python check_md5.py base`   
-`python check_md5.py update` 
+- Update `.env` as required. NOTE: The NCBI docs state that you should your use your email address as the password.
+- Install NPM packages   
+`npm install`
+- Initialise FTP mirroring BASE and UPDATE files and load when complete:   
+`node run init` 
+- To mirror and load subsequent updates:   
+`node run update` 
 
 ## Observations
 - Changing FTP mode to active (instead of passive) has greatly increased reliability of the connection and subsequent down downloads
