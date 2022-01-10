@@ -3,3 +3,4 @@
 *.gz
 *.xml
 *.json
+*.sqlite

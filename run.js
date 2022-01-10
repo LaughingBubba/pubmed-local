@@ -17,4 +17,3 @@ async function main() {
 		console.log(err)	
 	}
 }
-// Loading start: Sat Jan 08 2022 23:44:25 GMT+1100 (Australian Eastern Daylight Time)
