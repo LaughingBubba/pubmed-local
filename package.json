@@ -19,26 +19,15 @@
   "homepage": "https://gitlab.com/LaughingBubba/pubmed-db#readme",
   "dependencies": {
     "arraybuffer-xml-parser": "^0.5.0",
-    "assert": "^2.0.0",
-    "basic-ftp": "^4.6.6",
     "better-sqlite3": "^7.4.6",
     "chalk": "^4.1.2",
     "directory-tree": "^3.0.1",
     "dotenv": "^10.0.0",
     "fast-xml-parser": "^4.0.0-beta.8",
-    "fastparallel": "^2.4.1",
     "ftps": "^1.1.1",
     "libxmljs": "^0.19.7",
     "minizip": "^1.0.0",
     "mongodb": "^4.2.2",
-    "multiprocessing": "^1.2.0",
-    "node-expat": "^2.4.0",
-    "node-multiprocess": "^0.0.2",
-    "node-xml-stream": "^1.0.2",
-    "sqlite3": "^4.2.0",
-    "tslib": "^2.3.1",
-    "worker-farm": "^1.7.0",
-    "xml-stream": "^0.4.5",
-    "xml2js": "^0.4.23"
+    "tslib": "^2.3.1"
   }
 }
