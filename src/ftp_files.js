@@ -53,7 +53,7 @@ function run (pubtype) {
 	  	username: process.env.pubmed_db_ftp_user, 
 	  	password: process.env.pubmed_db_ftp_password, 
 	  	protocol: 'ftp', 
-	  	retries: 3, 
+	  	retries: 10,
 	  	timeout: 10, 
 	  	retryInterval: 5, 
 	  	retryMultiplier: 1, 

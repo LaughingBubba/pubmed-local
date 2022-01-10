@@ -1,9 +1,5 @@
 version: '3.1'
 
-# curl "mongo://root:access@pubmongo:27017/?replicaSet=rs0"
-# curl ubmongo:27017
-# curl pubmongo:27017
-
 services:
 
   mongo:
@@ -19,40 +15,9 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${pubmed_db_mongo_user}
       MONGO_INITDB_ROOT_PASSWORD: ${pubmed_db_mongo_password}
       MONGO_INITDB_DATABASE: ${pubmed_db_mongo_dbname}
-      MONGO_REPLICA_SET_NAME: rs0
-      MONGODB_REPLICA_SET_MODE: primary
-      # rs.initiate({_id : 'rs0', members: [{ _id : 0, host : "pubmongo:27017" }]})
-    command: ["--keyFile", "/opt/keyfile/keyfile", "--replSet", "rs0", "--bind_ip_all"]
     volumes:
-        - /Volumes/JS-EVO970-plus/pubmed/mongo:/data/db
-        - ./:/opt/keyfile/
+        - ${pubmed_db_mongo_dbname}:/data/db
         
-  solr:
-    container_name: pubsolr
-    env_file:
-      - .env    
-    platform: ${pubmed_db_docker_platform}
-    image: solr:8.11
-    restart: always
-    ports:
-      - 8983:8983
-    command:
-      - solr-precreate
-      - pubmed
-    volumes:
-        - /Volumes/JS-EVO970-plus/pubmed/solr:/var/solr
-        
-  sync:
-    container_name: pubsync
-    depends_on:
-      - mongo
-      - solr
-    env_file:
-      - .env
-    platform: ${pubmed_db_docker_platform}
-    build: ./
-    # image: solr:8.11
-    
 networks:
   default:
     external: true
