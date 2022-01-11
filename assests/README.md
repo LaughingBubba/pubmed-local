@@ -1,5 +1,6 @@
 ## PUBMED "Schema" References
 https://www.nlm.nih.gov/bsd/licensee/elements_descriptions.html    
+https://www.nlm.nih.gov/bsd/licensee/elements_required.html   
 https://www.ncbi.nlm.nih.gov/books/NBK3828/#publisherhelp.PubMed_XML_Tagged_Format   
 
 https://www.nlm.nih.gov/pubs/techbull/ma19/ma19_pubmed_update.html   
@@ -30,3 +31,5 @@ https://stackoverflow.com/questions/47615751/docker-compose-run-a-script-after-c
 https://blog.ouseful.info/2021/05/26/running-arbitrary-startup-scripts-in-docker-containers/   
 https://github.com/vishnubob/wait-for-it   
 https://medium.com/@krishnaregmi/wait-for-it-docker-compose-f0bac30f3357   
+
+https://link.springer.com/article/10.1007/s12021-011-9119-9
