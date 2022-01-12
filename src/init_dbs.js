@@ -44,7 +44,8 @@ async function init_mongo () {
 	
 	return new Promise( async (resolve, reject) => {
 
-		const client = new MongoClient(process.env.pubmed_db_mongo_uri, { useUnifiedTopology: true })		
+		const client = new MongoClient(process.env.pubmed_db_mongo_uri, { useUnifiedTopology: true })	
+		
 		client.connect( async (err, client) => {
 			
 			if (err) reject(err)

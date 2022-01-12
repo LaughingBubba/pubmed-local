@@ -7,6 +7,8 @@ Every file is checked to ensure the downloaded size of the file matches the size
 ### NOTE
 Written using Node v17.3.0
 
+`chmod 600 keyfile`
+
 ## Installation and Execution 
 - Clone this repo
 - Change directories to you local version of this repo
@@ -69,6 +71,40 @@ https://github.com/lbdremy/solr-node-client#readme
 https://dev.to/sntnupl/how-to-setup-a-mongodb-replica-set-for-development-using-docker-1de   
 https://zgadzaj.com/development/docker/docker-compose/turning-standalone-mongodb-server-into-a-replica-set-with-docker-compose   
 https://stackoverflow.com/questions/61486024/mongo-container-with-a-replica-set-with-only-one-node-in-docker-compose   
+
+## Commands
+Delete all items:
+{'delete': {'query': '*:*'}}
+
+List only fields in the cores schema:   
+`curl http://localhost:8983/solr/pubmed/schema/fields`
+
+List the core's schema:   
+`curl http://localhost:8983/solr/pubmed/schema`   
+`curl http://localhost:8983/solr/pubmed/schema?wt=schema.xml`   
+
+Update schema:   
+`curl -X POST -H 'Content-type:application/json' --data-binary '{
+  "add-field": [
+  {
+	"name": "title",
+	"type": "text_general"
+	"indexed": true,
+	"required": true,
+  },
+  {
+	"name": "abstract",
+	"type": "text_general"
+	"indexed": true,
+	"required": true,
+  },
+  {
+	"name": "version",
+	"type": "string",
+	"indexed": false,
+	"required": true,
+  }]
+}' http://localhost:8983/solr/pubmed/schema`
 
 ## FTP
 https://www.npmjs.com/package/ftps    

@@ -31,9 +31,13 @@ services:
     restart: always
     ports:
       - 8983:8983
+    # entrypoint:
+    #   - bash
+    #   - "-c"
+    #   - "precreate-core pubmed; precreate-core test; exec solr -f"
     command:
       - solr-precreate
-      - pubmed
+      - ${pubmed_db_mongo_dbname}
     volumes:
         - /Volumes/JS-EVO970-plus/pubmed/solr:/var/solr
 
@@ -50,4 +54,4 @@ services:
 networks:
   default:
     external: true
-    name: ${pubmed_db_docker_network}
+    name: m1-net
