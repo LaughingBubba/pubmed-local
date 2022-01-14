@@ -56,7 +56,15 @@ async function init_mongo () {
 			} catch (err) {
 				if (err.codeName != "NamespaceExists") reject(err) 
 			} 
-
+			
+			try {
+				const articles = await db.collection(process.env.pubmed_db_mongo_collection)
+				await articles.createIndex({ xmlfile: 1 }, {name: 'xmlfile'})
+			} catch (err) {
+				console.log(JSON.stringify(err))
+				if (err.codeName != "NamespaceExists") reject(err)
+			}
+			
 			try {
 				const articles = await db.collection(process.env.pubmed_db_mongo_collection)
 				await articles.createIndex({ PMID: 1 }, {name: 'PMID'})
