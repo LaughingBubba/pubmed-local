@@ -14,7 +14,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${pubmed_db_mongo_user}
       MONGO_INITDB_ROOT_PASSWORD: ${pubmed_db_mongo_password}
     volumes:
-        - /Volumes/JS-EVO970-plus/pubmed/mongo:/data/db
+        - ${pubmed_db_mongo}:/data/db
         
   solr:
     container_name: pubsolr
@@ -29,7 +29,7 @@ services:
       - solr-precreate
       - ${pubmed_db_mongo_dbname}
     volumes:
-        - /Volumes/JS-EVO970-plus/pubmed/solr:/var/solr
+        - ${pubmed_db_solr}:/var/solr
 #         
 # networks:
 #   default:
