@@ -44,7 +44,8 @@ async function init_mongo () {
 	
 	return new Promise( async (resolve, reject) => {
 
-		const client = new MongoClient(process.env.pubmed_db_mongo_uri, { useUnifiedTopology: true })		
+		const client = new MongoClient(process.env.pubmed_db_mongo_uri, { useUnifiedTopology: true })	
+		
 		client.connect( async (err, client) => {
 			
 			if (err) reject(err)
@@ -55,7 +56,15 @@ async function init_mongo () {
 			} catch (err) {
 				if (err.codeName != "NamespaceExists") reject(err) 
 			} 
-
+			
+			try {
+				const articles = await db.collection(process.env.pubmed_db_mongo_collection)
+				await articles.createIndex({ xmlfile: 1 }, {name: 'xmlfile'})
+			} catch (err) {
+				console.log(JSON.stringify(err))
+				if (err.codeName != "NamespaceExists") reject(err)
+			}
+			
 			try {
 				const articles = await db.collection(process.env.pubmed_db_mongo_collection)
 				await articles.createIndex({ PMID: 1 }, {name: 'PMID'})

@@ -1,4 +1,3 @@
-// pubmed22n0001.xml Start: Sun Jan 02 2022 23:53:19
 require('dotenv').config()
 const fs = require('fs').promises
 const {XMLParser} = require('fast-xml-parser')
@@ -7,6 +6,7 @@ const yellow = require('chalk').yellow
 const blue = require('chalk').blue
 const black = require('chalk').black
 const green = require('chalk').green
+const solr = require('solr-client')
 
 // main()
 
@@ -104,6 +104,8 @@ async function load (xmlfile) {
 			
 			const db = client.db(process.env.pubmed_db_mongo_dbname)
 			const docs = db.collection(process.env.pubmed_db_mongo_collection)
+			const solr_errors = db.collection('solr_errors')
+			const solr_client = solr.createClient({host:'localhost', core: process.env.pubmed_db_mongo_dbname })
 			
 			fs.readFile(xmlfile)
 			.then( async function(data) {
@@ -126,6 +128,14 @@ async function load (xmlfile) {
 						
 						// console.log(JSON.stringify(doc))
 						bulkDel.find( doc ).deleteOne()
+						await solr_client.deleteByID(doc.PMID.value).catch(err => {
+							let o = {}
+							o.fn = 'delete'
+							o.xml = xmlfile
+							o.obj = doc
+							o.err = err
+							solr_errors.insertOne(o)
+						})
 					}
 					
 					let res = await bulkDel.execute().catch(err => {
@@ -134,6 +144,14 @@ async function load (xmlfile) {
 					})
 					
 					removed = res.nRemoved	
+					
+					await solr_client.commit().catch(err => {
+						let o = {}
+						o.fn = 'delete-commit'
+						o.xml = xmlfile
+						o.err = err
+						solr_errors.insertOne(o)
+					})
 				}
 				
 				if (
@@ -141,6 +159,7 @@ async function load (xmlfile) {
 					jsonObj.PubmedArticleSet.PubmedArticle.length > 0) {
 					
 					const bulkUpd = docs.initializeUnorderedBulkOp()
+					const solr_docs = []
 					
 					for (const index in jsonObj.PubmedArticleSet.PubmedArticle) {  
 										
@@ -150,6 +169,18 @@ async function load (xmlfile) {
 						doc.xmlfile = xmlfile
 						
 						bulkUpd.find( {_id: doc._id} ).upsert().replaceOne( doc )	
+						
+						try {
+							solr_docs.push(solr_doc(doc))	
+						} catch (err) {
+							let o = {}
+							o.fn = 'upsert-solr_doc'
+							o.xml = xmlfile
+							o.obj = doc
+							o.err = err
+							solr_errors.insertOne(o)							
+						}
+						
 					}
 					
 					let res = await bulkUpd.execute().catch(err => {
@@ -159,6 +190,23 @@ async function load (xmlfile) {
 					
 					upserted = res.nUpserted
 					modified = res.nModified	
+					
+					try {
+						await solr_client.add(solr_docs)
+						await solr_client.commit().catch(err => {
+							let o = {}
+							o.fn = 'upsert-commit'
+							o.xml = xmlfile
+							o.err = err
+							solr_errors.insertOne(o)
+						})						
+					} catch (err) {
+						let o = {}
+						o.fn = 'upsert-docs'
+						o.xml = xmlfile
+						o.err = err						
+					}
+					
 				}
 				
 				client.close()
@@ -170,6 +218,61 @@ async function load (xmlfile) {
 			})
 		})
 	})
+}
+
+function solr_doc(mongo) {
+	
+	try {	
+		let obj = {}
+		obj.id = mongo.PMID.value
+		obj.title = null
+		obj.abstract = null
+		obj.version = (mongo.PMID.Version) ? mongo.PMID.Version : ' '
+		
+		// Work out title
+		if (mongo.Article.ArticleTitle) {
+			let t = mongo.Article.ArticleTitle
+			if (typeof t == 'object') obj.title = t.value
+			if (typeof t == 'string') obj.title = t
+		} else {
+			obj.title = ' '
+		}
+		
+		// Work out abstract
+		if (mongo.Article.Abstract && 
+			mongo.Article.Abstract.AbstractText) {
+				let a = mongo.Article.Abstract.AbstractText
+				if (Array.isArray(a)) {
+					for (item of a) {
+						obj.abstract = obj.abstract + ' ' + item.value
+					}
+				} else {
+					if (typeof a == 'object') {
+						if (a.hasOwnProperty('value')) {
+							obj.abstract = a.value
+						} 
+						if (a.hasOwnProperty('i')) {
+							if (Array.isArray(a.i)) {
+								for (item of a.i) {
+									obj.abstract = obj.abstract + ' ' + item.value
+								}
+							} else {
+								if (typeof a.i == 'string') obj.abstract = a.i
+							}
+						}
+					}
+					if (typeof a == 'string') obj.abstract = a	
+				}
+		} else {
+			obj.abstract = ' '
+		}
+		
+		return obj
+		
+	} catch (err) {
+		console.log(JSON.stringify(mongo,null,2))	
+		throw err
+	}
 }
 
 function md5_ok (file) {
