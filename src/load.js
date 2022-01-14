@@ -1,4 +1,3 @@
-// pubmed22n0001.xml Start: Sun Jan 02 2022 23:53:19
 require('dotenv').config()
 const fs = require('fs').promises
 const {XMLParser} = require('fast-xml-parser')
