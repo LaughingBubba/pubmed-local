@@ -30,7 +30,6 @@ Steps:
 - To mirror and load subsequent updates:   
 `node run update` 
 
-
 ## Observations
 - Changing FTP mode to active (instead of passive) has greatly increased reliability of the connection and subsequent down downloads
 - HOWEVER: Many files have local file sizes that don't match the listed size on the FTP server. When using PSAV the mismatch file sizes would often be multiples of the base size.
