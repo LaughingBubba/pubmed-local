@@ -1,7 +1,6 @@
 version: '3.1'
 
 services:
-
   mongo:
     container_name: pubmongo
     env_file:
@@ -14,10 +13,24 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${pubmed_db_mongo_user}
       MONGO_INITDB_ROOT_PASSWORD: ${pubmed_db_mongo_password}
-      MONGO_INITDB_DATABASE: ${pubmed_db_mongo_dbname}
     volumes:
-        - ${pubmed_db_mongo_dbname}:/data/db
+        - /Volumes/JS-EVO970-plus/pubmed/mongo:/data/db
         
+  solr:
+    container_name: pubsolr
+    env_file:
+      - .env    
+    platform: ${pubmed_db_docker_platform}
+    image: solr:8.11
+    restart: always
+    ports:
+      - 8983:8983
+    command:
+      - solr-precreate
+      - ${pubmed_db_mongo_dbname}
+    volumes:
+        - /Volumes/JS-EVO970-plus/pubmed/solr:/var/solr
+#         
 # networks:
 #   default:
 #     external: true
