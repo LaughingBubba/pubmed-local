@@ -12,6 +12,7 @@ https://solr.apache.org/guide/8_11/schema-api.html
 https://solr.apache.org/guide/8_11/uploading-data-with-index-handlers.html   
 
 ### Starters
+https://cwiki.apache.org/confluence/display/SOLR/IntegratingSolr#IntegratingSolr-/JSON/Node.js   
 https://medium.com/jiho-noh/install-solr-on-ubuntu-server-for-pubmed-articles-b9a5e01c045f   
 https://github.com/matthias-samwald/find-me-evidence/blob/master/solr_configuration/collection1/conf/schema.xml   
 https://github.com/agrunfeld/solr-pubmed/blob/master/solr-config/core0/conf/schema.xml   

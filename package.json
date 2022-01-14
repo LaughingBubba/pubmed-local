@@ -24,6 +24,7 @@
     "minizip": "^1.0.0",
     "mongodb": "^4.2.2",
     "solr-client": "^0.10.0-rc9",
+    "superagent": "^7.0.2",
     "tslib": "^2.3.1"
   }
 }

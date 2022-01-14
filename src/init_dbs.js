@@ -1,6 +1,7 @@
 require('dotenv').config()
 const MongoClient = require('mongodb').MongoClient
 const Database = require('better-sqlite3')
+const superagent = require('superagent')
 
 // main()
 
@@ -9,10 +10,54 @@ async function main () {
 		try {
 			await init_sqlite()
 			await init_mongo()
+			await init_solr()
 			resolve()
 		} catch (err) {
 			reject(err)
 		}		
+	})
+}
+
+async function init_solr () {
+	return new Promise( async (resolve, reject) => {
+		
+		const fields = {"add-field": 				
+			[
+		  		{
+					name: "title",
+					type: "text_general",
+					indexed: true,
+					required: true,
+		  		},
+		  		{
+					name: "abstract",
+					type: "text_general",
+					indexed: true,
+					required: true,
+		  		},
+		  		{
+					name: "version",
+					type: "string",
+					indexed: false,
+					required: true,
+				}
+			]	
+		}
+		
+		try {
+			superagent
+			.post('http://localhost:8983/solr/pubmed/schema')
+			.set('Content-type', 'application/json')
+			.send(fields)
+			.end((err, res) => {
+				// console.log(((err) ? err : res))
+				// Ignore errors if fields already exist
+			})
+			resolve()
+		} catch (err) {
+			reject(err)
+		}	
+		
 	})
 }
 
