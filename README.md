@@ -88,6 +88,29 @@ Update schema:
   }]
 }' http://localhost:8983/solr/pubmed/schema`
 
+curl http://localhost:8983/solr/pubmed/query -d '
+{
+  "query": "*:*",
+  "facet": {
+	"categories" : {
+	  "type": "terms",
+	  "field": "xmlfile",
+	  "limit": 2000
+	}
+  }
+}'
+
+
+curl http://localhost:8983/solr/pubmed/query -d '
+{
+  "query": "*:*",
+  "facet": {
+	"categories" : {
+	  "type": "terms",
+	  "field": "xmlfile"
+	}
+  }
+}'
 ## FTP
 https://www.npmjs.com/package/ftps    
 https://lftp.yar.ru/    

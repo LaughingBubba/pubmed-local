@@ -1,12 +1,15 @@
 require('dotenv').config()
-const fs = require('fs').promises
+const fsPromise = require('fs').promises
+const fs = require('fs')
 const {XMLParser} = require('fast-xml-parser')
 const Database = require('better-sqlite3')
+const superagent = require('superagent')
+const crypto = require('crypto')
+const Gunzip = require('minizlib').Gunzip
 const yellow = require('chalk').yellow
 const blue = require('chalk').blue
 const black = require('chalk').black
 const green = require('chalk').green
-const solr = require('solr-client')
 
 // main()
 
@@ -29,7 +32,7 @@ async function main () {
 			if (await md5_ok(row.name)) {
 				delete_me = await unzip(row.name)
 				await load(delete_me)
-				await fs.unlink(delete_me)
+				await fs.unlinkSync(delete_me)
 				sql = `
 					UPDATE pubmed_ftp
 					set sts='LOADED'
@@ -54,7 +57,6 @@ async function load (xmlfile) {
 	
 	return new Promise( async (resolve, reject) => {
 		
-		var message = ''
 		var errorApend = ''
 		var upserted = 0
 		var modified = 0
@@ -72,30 +74,6 @@ async function load (xmlfile) {
 		const MongoClient = require('mongodb').MongoClient
 		const client = new MongoClient(process.env.pubmed_db_mongo_uri, { useUnifiedTopology: true })
 		
-		function start() {
-			startTime = new Date()
-		}
-		
-		function end() {
-			endTime = new Date()
-			var timeDiff = endTime - startTime //in ms
-			var msec = timeDiff
-			
-			var hh = Math.floor(msec / 1000 / 60 / 60)
-			msec -= hh * 1000 * 60 * 60
-			
-			var mm = Math.floor(msec / 1000 / 60)
-			msec -= mm * 1000 * 60
-			
-			var ss = Math.floor(msec / 1000)
-			msec -= ss * 1000 
-			
-			var seconds = Math.round(timeDiff)
-			var minutes = Math.round(seconds / 60, 2)
-			message = blue(`file: ${yellow(xmlfile)} upserted: ${yellow(upserted)} modified: ${yellow(modified)} removed: ${yellow(removed)} duration ${yellow(`${hh}:${mm}:${ss}`)} hh:mm:ss ${errorApend}`)
-			console.log(message)
-		}
-		
 		start()
 		
 		client.connect( async (err, client) => {
@@ -105,55 +83,59 @@ async function load (xmlfile) {
 			const db = client.db(process.env.pubmed_db_mongo_dbname)
 			const docs = db.collection(process.env.pubmed_db_mongo_collection)
 			const solr_errors = db.collection('solr_errors')
-			const solr_client = solr.createClient({host:'localhost', core: process.env.pubmed_db_mongo_dbname })
 			
-			fs.readFile(xmlfile)
-			.then( async function(data) {
+			try {
 				
-				let jsonObj = parser.parse(data)
+				const data = fs.readFileSync(xmlfile)
 				
+				const jsonObj = parser.parse(data)
+				
+				// Handle Deletions
 				if (
 					typeof jsonObj.PubmedArticleSet.DeleteCitation != 'undefined' && 
 					typeof jsonObj.PubmedArticleSet.DeleteCitation.PMID != 'undefined' && 
 					jsonObj.PubmedArticleSet.DeleteCitation.PMID.length > 0) {
-					
+
 					const bulkDel = docs.initializeUnorderedBulkOp()
+					const solr_qrys = []
 					
-					for (const index in jsonObj.PubmedArticleSet.DeleteCitation.PMID) {
+					for (const item of jsonObj.PubmedArticleSet.DeleteCitation.PMID) {
 						
 						let doc = {}
 						doc.PMID = {}
-						doc.PMID.value = jsonObj.PubmedArticleSet.DeleteCitation.PMID[index].value
-						doc.PMID.Version = jsonObj.PubmedArticleSet.DeleteCitation.PMID[index].Version
+						doc.PMID.value = item.value
+						doc.PMID.Version = item.Version
 						
-						// console.log(JSON.stringify(doc))
 						bulkDel.find( doc ).deleteOne()
-						await solr_client.deleteByID(doc.PMID.value).catch(err => {
-							let o = {}
-							o.fn = 'delete'
-							o.xml = xmlfile
-							o.obj = doc
-							o.err = err
-							solr_errors.insertOne(o)
-						})
+						solr_qrys.push({query:`(id:${doc.PMID.value}) AND (version:${doc.PMID.Version})`})
+						
 					}
 					
-					let res = await bulkDel.execute().catch(err => {
+					try {
+						let res = await bulkDel.execute()
+						removed = res.nRemoved
+						
+						try {
+							await superagent
+									.post('http://localhost:8983/solr/pubmed/update?commit=true')
+									.set('Content-type', 'application/json')
+									.send({delete: solr_qrys})
+						} catch (err) {
+							let o = {}
+							o.fn = 'solr-del-docs'
+							o.xml = xmlfile
+							o.err = err.response.error.text	
+							await solr_errors.insertOne(o)						
+						}
+
+					} catch(err) {
 						errorApend = yellow(`err: ${err})`)
-						return {nRemoved: 0}
-					})
+						reject(err)
+					}
 					
-					removed = res.nRemoved	
-					
-					await solr_client.commit().catch(err => {
-						let o = {}
-						o.fn = 'delete-commit'
-						o.xml = xmlfile
-						o.err = err
-						solr_errors.insertOne(o)
-					})
 				}
 				
+				// Handle upserts
 				if (
 					typeof jsonObj.PubmedArticleSet.PubmedArticle != 'undefined' && 
 					jsonObj.PubmedArticleSet.PubmedArticle.length > 0) {
@@ -171,113 +153,175 @@ async function load (xmlfile) {
 						bulkUpd.find( {_id: doc._id} ).upsert().replaceOne( doc )	
 						
 						try {
-							solr_docs.push(solr_doc(doc))	
+							solr_docs.push(solr_doc(doc, xmlfile))	
 						} catch (err) {
 							let o = {}
 							o.fn = 'upsert-solr_doc'
 							o.xml = xmlfile
 							o.obj = doc
-							o.err = err
-							solr_errors.insertOne(o)							
+							o.err = err.response.error.text	
+							await solr_errors.insertOne(o)								
 						}
 						
 					}
 					
-					let res = await bulkUpd.execute().catch(err => {
-						errorApend = yellow(`err: ${err})`)
-						return {nUpserted: 0, nModified: 0}
-					})
-					
-					upserted = res.nUpserted
-					modified = res.nModified	
-					
 					try {
-						await solr_client.add(solr_docs)
-						await solr_client.commit().catch(err => {
+						let res = await bulkUpd.execute()
+						upserted = res.nUpserted
+						modified = res.nModified		
+						
+						try {
+							await superagent
+									.post('http://localhost:8983/solr/pubmed/update?commit=true')
+									.set('Content-type', 'application/json')
+									.send({add: solr_docs})
+						} catch (err) {
 							let o = {}
-							o.fn = 'upsert-commit'
+							o.fn = 'solr-add-docs'
 							o.xml = xmlfile
-							o.err = err
-							solr_errors.insertOne(o)
-						})						
+							o.err = err.response.error.text	
+							await solr_errors.insertOne(o)						
+						}
+						
 					} catch (err) {
-						let o = {}
-						o.fn = 'upsert-docs'
-						o.xml = xmlfile
-						o.err = err						
+						errorApend = yellow(`err: ${err})`)
+						reject(err)
 					}
 					
 				}
 				
 				client.close()
-				end()
+				end(upserted, modified, removed, errorApend)
 				resolve()
-			})
-			.catch(function(error) {
-				reject(error)
-			})
+			
+			} catch (err) {
+				reject(err)	
+			}
+
 		})
 	})
+	
+			
+	function start() {
+		startTime = new Date()
+	}
+	
+	function end(upserted, modified, removed, append) {
+		endTime = new Date()
+		var timeDiff = endTime - startTime //in ms
+		var msec = timeDiff
+		
+		var hh = Math.floor(msec / 1000 / 60 / 60)
+		msec -= hh * 1000 * 60 * 60
+		
+		var mm = Math.floor(msec / 1000 / 60)
+		msec -= mm * 1000 * 60
+		
+		var ss = Math.floor(msec / 1000)
+		msec -= ss * 1000 
+		
+		var seconds = Math.round(timeDiff)
+		var minutes = Math.round(seconds / 60, 2)
+		let message = blue(`file: ${yellow(xmlfile)} upserted: ${yellow(upserted)} modified: ${yellow(modified)} removed: ${yellow(removed)} duration ${yellow(`${hh}:${mm}:${ss}`)} hh:mm:ss ${append}`)
+		console.log(message)
+	}
 }
 
-function solr_doc(mongo) {
+function solr_doc(mongo, xmlfile) {
 	
-	try {	
-		let obj = {}
+	let obj = {}
+	
+	try {		
 		obj.id = mongo.PMID.value
-		obj.title = null
-		obj.abstract = null
+		obj.xmlfile = xmlfile
+		obj.title = ''
+		obj.abstract = ''
 		obj.version = (mongo.PMID.Version) ? mongo.PMID.Version : ' '
 		
 		// Work out title
 		if (mongo.Article.ArticleTitle) {
 			let t = mongo.Article.ArticleTitle
-			if (typeof t == 'object') obj.title = t.value
+			if (typeof t == 'object') obj.title = parseObj(t)
 			if (typeof t == 'string') obj.title = t
+			if (typeof t == 'number') obj.title = t	
 		} else {
 			obj.title = ' '
 		}
 		
 		// Work out abstract
-		if (mongo.Article.Abstract && 
-			mongo.Article.Abstract.AbstractText) {
+		if (mongo.Article.Abstract) {
+			
+			if (mongo.Article.Abstract.AbstractText) {
 				let a = mongo.Article.Abstract.AbstractText
-				if (Array.isArray(a)) {
-					for (item of a) {
-						obj.abstract = obj.abstract + ' ' + item.value
-					}
-				} else {
-					if (typeof a == 'object') {
-						if (a.hasOwnProperty('value')) {
-							obj.abstract = a.value
-						} 
-						if (a.hasOwnProperty('i')) {
-							if (Array.isArray(a.i)) {
-								for (item of a.i) {
-									obj.abstract = obj.abstract + ' ' + item.value
-								}
-							} else {
-								if (typeof a.i == 'string') obj.abstract = a.i
-							}
-						}
-					}
-					if (typeof a == 'string') obj.abstract = a	
-				}
+				if (typeof a == 'object') obj.abstract = parseObj(a)
+				if (typeof a == 'string') obj.abstract = a
+				if (typeof a == 'number') obj.abstract = a
+			} else {
+				obj.abstract = ' '
+			}
+			
 		} else {
 			obj.abstract = ' '
 		}
 		
+		if (obj.title === '') obj.title = null
+		if (obj.abstract === '') obj.abstract = null
 		return obj
 		
 	} catch (err) {
-		console.log(JSON.stringify(mongo,null,2))	
+		console.log(JSON.stringify(obj,null,2))	
+		console.log(JSON.stringify(mongo.Article,null,2))
 		throw err
+	}
+	
+	function parseObj (obj) {
+		let parsed = ''
+		
+		if (Array.isArray(obj)) {
+			
+			for (item of obj) {
+				parsed = parsed + ' ' + obj.value
+			}
+				
+		} else {
+			
+			if (obj.hasOwnProperty('b')) {
+				if (Array.isArray(obj.b)) {
+					for (item of obj.b) {
+						parsed = parsed + ' ' + item.value
+					}
+				} else {
+					if (typeof obj.b == 'string') parsed = parsed + ' ' + obj.b
+					if (typeof obj.b == 'string') parsed = parsed + ' ' + obj.b
+					if (typeof obj.b == 'object') parsed = parsed + ' ' + parseObj(obj.b)
+				}
+			}
+			if (obj.hasOwnProperty('value')) {
+				parsed = parsed + ' ' +  obj.value
+			} 							
+			if (obj.hasOwnProperty('i')) {
+				if (Array.isArray(obj.i)) {
+					for (item of obj.i) {
+						parsed = parsed + ' ' + item.value
+					}
+				} else {
+					if (typeof obj.i == 'string') parsed = parsed + ' ' + obj.i
+					if (typeof obj.i == 'number') parsed = parsed + ' ' + obj.i
+					if (typeof obj.i == 'object') parsed = parsed + ' ' + parseObj(obj.i)
+				}
+			}
+			if (obj.hasOwnProperty('Label') && typeof obj.Label == 'string') {
+				parsed = parsed + ' ' + obj.Label
+			} 
+			
+		}
+				
+		return parsed
 	}
 }
 
 function md5_ok (file) {
-	const fs = require('fs')
-	const crypto = require('crypto')
+
 	return new Promise( async (resolve, reject) => {
 		try {
 			gzip_file = process.env.pubmed_db_downloads + file
@@ -297,20 +341,18 @@ function md5_ok (file) {
 }
 
 function unzip (file) {
-	const fs = require('fs')
-	const Gunzip = require('minizlib').Gunzip
 	
-	xmlFile = file.replace('.gz','')
+	const xmlfile = file.replace('.gz','')
 	
 	return new Promise( async (resolve, reject) => {
 		try {
 			const input = fs.createReadStream(process.env.pubmed_db_downloads + file)
-			const output = fs.createWriteStream(process.env.pubmed_db_xml + xmlFile)
+			const output = fs.createWriteStream(process.env.pubmed_db_xml + xmlfile)
 			
 			const decode = new Gunzip()
 			
 			input.pipe(decode).pipe(output)
-			output.on('finish', () => resolve(process.env.pubmed_db_xml + xmlFile))			
+			output.on('finish', () => resolve(process.env.pubmed_db_xml + xmlfile))			
 		} catch (err) {
 			reject(err)
 		}

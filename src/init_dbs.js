@@ -40,6 +40,12 @@ async function init_solr () {
 					type: "string",
 					indexed: false,
 					required: true,
+				},
+				  {
+					name: "xmlfile",
+					type: "string",
+					indexed: true,
+					required: true,
 				}
 			]	
 		}
