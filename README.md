@@ -54,6 +54,9 @@ https://github.com/docker-solr/docker-solr/blob/master/README.md
 https://www.npmjs.com/package/solr-client   
 https://github.com/lbdremy/solr-node-client#readme     
 
+https://yonik.com/solr-tutorial/   
+https://yonik.com/solr/query-syntax/   
+
 ## Commands
 Delete all items:
 {'delete': {'query': '*:*'}}
