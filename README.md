@@ -117,3 +117,10 @@ curl http://localhost:8983/solr/pubmed/query -d '
 ## FTP
 https://www.npmjs.com/package/ftps    
 https://lftp.yar.ru/    
+
+## RUST helpful links
+https://www.thorsten-hans.com/working-with-environment-variables-in-rust/   
+https://crates.io/crates/dotenv   
+https://crates.io/crates/rusqlite   
+
+
