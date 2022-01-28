@@ -12,6 +12,7 @@ Written using Node v17.3.0
 Assumptions:
 - Running on M1 platform (if not, change `pubmed_db_docker_platform` value in `.env` to `linux/amd64`)
 - Docker Engine is already installed
+- Node 17.3 or up (but probs will work on earlier versions)
 
 Steps:
 - Install node   
@@ -22,9 +23,12 @@ Steps:
 - Change directory to your local version of this repo   
 `cd ./pubmed-db`
 - Rename the example `.env.example` to `.env`
-- Update `.env` as required. NOTE: The NCBI docs state that you should your use your email address as the password.
+- Update `.env` as required. 
+- NOTE: The NCBI docs state that you should your use your email address as the password. Please update this in the .env file. Do the right thing.
 - Install NPM packages   
 `npm install`
+- Start the Mongo and Solr containers
+`docker-compose up -d`
 - Initialise FTP mirroring BASE and UPDATE files and load when complete:   
 `node run init` 
 - To mirror and load subsequent updates:   
