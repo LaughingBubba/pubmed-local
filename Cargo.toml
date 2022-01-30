@@ -9,4 +9,5 @@ edition = "2021"
 dotenv = "0.15.0"
 # rusqlite = "0.26.3"
 rusqlite = { version = "*", features = ["bundled"] }
-# sqlite = "0.26.0"
+mongodb = "2.1.0"
+# sqlite = "0.26.0" 
