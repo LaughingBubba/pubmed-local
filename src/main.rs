@@ -1,6 +1,7 @@
 use pubmed_db::{init_dbs, ftp_files, check_md5s, load};
 
-fn main() {
+#[tokio::main]
+async fn main() {
 	
 	let mut no_load = false;
 	
@@ -13,9 +14,9 @@ fn main() {
 		} 
 	}
 	
-	init_dbs();
+	init_dbs().await;
 	ftp_files();
-	check_md5s();
+	check_md5s().await;
 	if no_load == false {
 		load();
 	} else {

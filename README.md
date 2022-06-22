@@ -123,4 +123,20 @@ https://www.thorsten-hans.com/working-with-environment-variables-in-rust/
 https://crates.io/crates/dotenv   
 https://crates.io/crates/rusqlite   
 
+### Async
+https://rust-lang.github.io/async-book/01_getting_started/01_chapter.html   
+https://rust-lang.github.io/async-book/03_async_await/01_chapter.html
+https://omarabid.com/async-rust   
+https://tokio.rs/   
+https://crates.io/crates/tokio   
+https://docs.rs/tokio/latest/tokio/   
 
+### HTTP Requests
+https://blog.logrocket.com/making-http-requests-rust-reqwest/   
+https://docs.rs/http/0.1.19/http/request/struct.Request.html   
+https://docs.rs/reqwest/0.11.5/reqwest/#making-post-requests-or-setting-request-bodies   
+
+## JSON
+https://docs.rs/json/0.12.4/json/   
+
+## Crypto
