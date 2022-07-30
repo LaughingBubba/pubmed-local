@@ -12,6 +12,7 @@ Written using Node v17.3.0
 Assumptions:
 - Running on M1 platform (if not, change `pubmed_db_docker_platform` value in `.env` to `linux/amd64`)
 - Docker Engine is already installed
+- Node 17.3 or up (but probs will work on earlier versions)
 
 Steps:
 - Install node   
@@ -22,9 +23,12 @@ Steps:
 - Change directory to your local version of this repo   
 `cd ./pubmed-db`
 - Rename the example `.env.example` to `.env`
-- Update `.env` as required. NOTE: The NCBI docs state that you should your use your email address as the password.
+- Update `.env` as required. 
+- NOTE: The NCBI docs state that you should your use your email address as the password. Please update this in the .env file. Do the right thing.
 - Install NPM packages   
 `npm install`
+- Start the Mongo and Solr containers
+`docker-compose up -d`
 - Initialise FTP mirroring BASE and UPDATE files and load when complete:   
 `node run init` 
 - To mirror and load subsequent updates:   
@@ -53,9 +57,6 @@ https://github.com/docker-solr/docker-solr/blob/master/README.md
 
 https://www.npmjs.com/package/solr-client   
 https://github.com/lbdremy/solr-node-client#readme     
-
-https://yonik.com/solr-tutorial/   
-https://yonik.com/solr/query-syntax/   
 
 ## Commands
 Delete all items:
@@ -117,26 +118,3 @@ curl http://localhost:8983/solr/pubmed/query -d '
 ## FTP
 https://www.npmjs.com/package/ftps    
 https://lftp.yar.ru/    
-
-## RUST helpful links
-https://www.thorsten-hans.com/working-with-environment-variables-in-rust/   
-https://crates.io/crates/dotenv   
-https://crates.io/crates/rusqlite   
-
-### Async
-https://rust-lang.github.io/async-book/01_getting_started/01_chapter.html   
-https://rust-lang.github.io/async-book/03_async_await/01_chapter.html
-https://omarabid.com/async-rust   
-https://tokio.rs/   
-https://crates.io/crates/tokio   
-https://docs.rs/tokio/latest/tokio/   
-
-### HTTP Requests
-https://blog.logrocket.com/making-http-requests-rust-reqwest/   
-https://docs.rs/http/0.1.19/http/request/struct.Request.html   
-https://docs.rs/reqwest/0.11.5/reqwest/#making-post-requests-or-setting-request-bodies   
-
-## JSON
-https://docs.rs/json/0.12.4/json/   
-
-## Crypto
