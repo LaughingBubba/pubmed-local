@@ -3,3 +3,4 @@ node_modules/
 pubmed-db.cnf
 .env
 *.sqlite
+.DS_Store
