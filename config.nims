@@ -1,0 +1,6 @@
+--run
+--threads
+--verbosity:0
+--outdir:"./bin/"
+--d:"ssl"
+--threads:on
