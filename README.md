@@ -1,38 +1,28 @@
-# pubmed-db
+# pubmed-local (PML)
 
-Reliably download pubmed baseline and updates from the NCBI FTP server and load to MongoDB.
+Download and sync pubmed to your M1 Mac Mini.
+
+Reliably download pubmed baseline and updates from the NCBI FTP server then load to MongoDB and Solr (for advanced text search).
+
+## FTP 
 
 Every file's md5 is checked to ensure they have downloaded correctly. Failures will trigger re-mirroring of the affected files and their md5's.
-
-### NOTE
-Written using Node v17.3.0
 
 ## Installation and Execution 
 
 Assumptions:
-- Running on M1 platform (if not, change `pubmed_db_docker_platform` value in `.env` to `linux/amd64`)
+- Running on M1 platform 
 - Docker Engine is already installed
-- Node 17.3 or up (but probs will work on earlier versions)
 
 Steps:
-- Install node   
-`brew update && brew install node`
-- Install lftp (required by node-ftps npm package)   
-`brew install lftp`
-- Clone this repo
-- Change directory to your local version of this repo   
-`cd ./pubmed-db`
-- Rename the example `.env.example` to `.env`
-- Update `.env` as required. 
-- NOTE: The NCBI docs state that you should your use your email address as the password. Please update this in the .env file. Do the right thing.
-- Install NPM packages   
-`npm install`
-- Start the Mongo and Solr containers
-`docker-compose up -d`
-- Initialise FTP mirroring BASE and UPDATE files and load when complete:   
-`node run init` 
-- To mirror and load subsequent updates:   
-`node run update` 
+- Download the `pml` binary to a directory of your choice ie: `/Users/yourname/pubmed` NOTE: This will be used as the `pubmed-local` directory
+- If you haven't already change directory to where the binary is eg:   
+`cd /Users/yourname/pubmed`   
+- Run PML setup command:      
+`pml setup`
+- Follow the prompts
+
+NOTE: The NCBI docs state that you should your use your email address as the password. Please update this in the .env file. Do the right thing.
 
 ## Observations
 - Changing FTP mode to active (instead of passive) has greatly increased reliability of the connection and subsequent down downloads
