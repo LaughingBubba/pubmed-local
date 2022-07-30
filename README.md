@@ -30,14 +30,12 @@ NOTE: The NCBI docs state that you should your use your email address as the pas
 - The most number of consecutive successful downloads with PASV was ~100, usually less.
 - The majority of the last 3 to 4 hundred xml files contain duplicates.
 
-## Installing Latest Python Locally for Mac
-
-https://opensource.com/article/19/5/python-3-default-mac
-
-### Then mess around with
-https://github.com/pyenv/pyenv  
-https://medium.com/geekculture/setting-up-python-environment-in-macos-using-pyenv-and-pipenv-116293da8e72
-NOTE: check .zshrc or .bashrc for pyenv shims PATH export 
+## Nim modules
+[FTP](https://nim-lang.org/docs/asyncftpclient.html) STD - pure   
+[XML](https://nim-lang.org/docs/parsexml.html) STD - pure   
+[JSON](https://nim-lang.org/docs/json.html#json_1) STD - pure   
+[SQLite](https://nim-lang.org/docs/db_sqlite.html) STD - impure   
+[dotenv](https://nimble.directory/pkg/dotenv) package   
 
 ## Solr
 https://solr.apache.org/   
@@ -105,6 +103,3 @@ curl http://localhost:8983/solr/pubmed/query -d '
 	}
   }
 }'
-## FTP
-https://www.npmjs.com/package/ftps    
-https://lftp.yar.ru/    
