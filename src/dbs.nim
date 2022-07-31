@@ -1,8 +1,8 @@
 import std/db_sqlite
 
-proc init_sqlite* =
-  let db = open("some_db.sqlite", "", "", "")
-  let smt = """	
+proc init_sqlite* (dbname: string) =
+  let db = open(dbname, "", "", "")
+  let stmt = """	
     CREATE TABLE IF NOT EXISTS pubmed_ftp (
       name TEXT,
       size INT,
@@ -12,5 +12,18 @@ proc init_sqlite* =
       PRIMARY KEY (name)
     );
   """
-  db.exec(sql(smt))
+  db.exec(sql(stmt))
   db.close()
+
+proc list_files* (dbname: string): seq =
+  let db = open(dbname, "", "", "")
+  let stmt = """	
+    SELECT name
+    FROM pubmed_ftp
+    WHERE name like '%gz'
+      and sts = 'NEW'
+    ORDER BY name
+  """
+  let rows: seq = db.getAllRows(sql(stmt))
+  db.close()
+  return rows
