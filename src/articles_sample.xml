@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE PubmedArticleSet PUBLIC "-//NLM//DTD PubMedArticle, 1st January 2019//EN" "https://dtd.nlm.nih.gov/ncbi/pubmed/out/pubmed_190101.dtd">
+<PubmedArticleSet>
+  <PubmedArticle>
+  BLAH
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">24273101</PMID>
+      <DateCompleted>
+        <Year>2014</Year>
+        <Month>05</Month>
+        <Day>20</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2022</Year>
+        <Month>01</Month>
+        <Day>29</Day>
+      </DateRevised>
+      <Article PubModel="Print-Electronic">
+        <Journal>
+          <ISSN IssnType="Electronic">1097-4598</ISSN>
+          <JournalIssue CitedMedium="Internet">
+            <Volume>49</Volume>
+            <Issue>4</Issue>
+            <PubDate>
+              <Year>2014</Year>
+              <Month>Apr</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Muscle &amp; nerve</Title>
+          <ISOAbbreviation>Muscle Nerve</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>Tools and talk: an evolutionary perspective on the functional deficits associated with amyotrophic lateral sclerosis.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>469-77</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1002/mus.24132</ELocationID>
+        <Abstract>
+          <AbstractText>We propose that amyotrophic lateral sclerosis (ALS), and frontotemporal dementia may be viewed as a failure of interlinked functional complexes having their origins in key evolutionary adaptations. We discuss how hand-arm function, locomotion, brainstem function (involving vocalization/speech, swallowing and breathing), and cognitive impairment share complex, interdependent evolutionary adaptations that can be traced back several million years. Fine movements of the hand facilitated tool-making and use enhanced by development of bipedalism. Development of the larynx and integration of respiratory control were central to vocalization, which when combined with gesture are intermediary to human language. These adaptations were accompanied by progressive encephalization, with development of Theory of Mind to facilitate socialization. The varied clinical phenotypes of ALS can thus be understood in the context of inter-related functional complexes that subserve "Tools and Talk"; they have a long evolutionary history and are related to specific developmental neural and gene networks.</AbstractText>
+          <CopyrightInformation>Copyright © 2013 Wiley Periodicals, Inc.</CopyrightInformation>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Eisen</LastName>
+            <ForeName>Andrew</ForeName>
+            <Initials>A</Initials>
+            <AffiliationInfo>
+              <Affiliation>Division of Neurology, University of British Columbia, 2826 Highbury Street, Vancouver, BC, V6R 3T6, Canada.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Turner</LastName>
+            <ForeName>Martin R</ForeName>
+            <Initials>MR</Initials>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Lemon</LastName>
+            <ForeName>Roger</ForeName>
+            <Initials>R</Initials>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <GrantList CompleteYN="Y">
+          <Grant>
+            <GrantID>MR/K01014X/1</GrantID>
+            <Acronym>MRC_</Acronym>
+            <Agency>Medical Research Council</Agency>
+            <Country>United Kingdom</Country>
+          </Grant>
+          <Grant>
+            <GrantID>TURNER/JAN13/944-795</GrantID>
+            <Acronym>MNDA_</Acronym>
+            <Agency>Motor Neurone Disease Association</Agency>
+            <Country>United Kingdom</Country>
+          </Grant>
+        </GrantList>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+          <PublicationType UI="D016454">Review</PublicationType>
+        </PublicationTypeList>
+        <ArticleDate DateType="Electronic">
+          <Year>2013</Year>
+          <Month>12</Month>
+          <Day>18</Day>
+        </ArticleDate>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>United States</Country>
+        <MedlineTA>Muscle Nerve</MedlineTA>
+        <NlmUniqueID>7803146</NlmUniqueID>
+        <ISSNLinking>0148-639X</ISSNLinking>
+      </MedlineJournalInfo>
+      <CitationSubset>IM</CitationSubset>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D000690" MajorTopicYN="N">Amyotrophic Lateral Sclerosis</DescriptorName>
+          <QualifierName UI="Q000503" MajorTopicYN="Y">physiopathology</QualifierName>
+          <QualifierName UI="Q000523" MajorTopicYN="N">psychology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D000818" MajorTopicYN="N">Animals</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005075" MajorTopicYN="Y">Biological Evolution</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D057180" MajorTopicYN="N">Frontotemporal Dementia</DescriptorName>
+          <QualifierName UI="Q000503" MajorTopicYN="Y">physiopathology</QualifierName>
+          <QualifierName UI="Q000523" MajorTopicYN="N">psychology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D006225" MajorTopicYN="N">Hand</DescriptorName>
+          <QualifierName UI="Q000502" MajorTopicYN="N">physiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D006801" MajorTopicYN="N">Humans</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D009068" MajorTopicYN="N">Movement</DescriptorName>
+          <QualifierName UI="Q000502" MajorTopicYN="N">physiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D013060" MajorTopicYN="N">Speech</DescriptorName>
+          <QualifierName UI="Q000502" MajorTopicYN="Y">physiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D053001" MajorTopicYN="N">Tool Use Behavior</DescriptorName>
+          <QualifierName UI="Q000502" MajorTopicYN="Y">physiology</QualifierName>
+        </MeshHeading>
+      </MeshHeadingList>
+      <KeywordList Owner="NOTNLM">
+        <Keyword MajorTopicYN="N">evolution</Keyword>
+        <Keyword MajorTopicYN="N">frontotemporal dementia</Keyword>
+        <Keyword MajorTopicYN="N">mirror neurons</Keyword>
+        <Keyword MajorTopicYN="N">motor neuron disease</Keyword>
+        <Keyword MajorTopicYN="N">split hand</Keyword>
+      </KeywordList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="received">
+          <Year>2013</Year>
+          <Month>07</Month>
+          <Day>03</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="revised">
+          <Year>2013</Year>
+          <Month>10</Month>
+          <Day>28</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="accepted">
+          <Year>2013</Year>
+          <Month>11</Month>
+          <Day>21</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>2013</Year>
+          <Month>11</Month>
+          <Day>26</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>2013</Year>
+          <Month>11</Month>
+          <Day>26</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>2014</Year>
+          <Month>5</Month>
+          <Day>21</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">24273101</ArticleId>
+        <ArticleId IdType="doi">10.1002/mus.24132</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">24273127</PMID>
+      <DateCompleted>
+        <Year>2014</Year>
+        <Month>04</Month>
+        <Day>22</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2022</Year>
+        <Month>01</Month>
+        <Day>29</Day>
+      </DateRevised>
+      <Article PubModel="Print-Electronic">
+        <Journal>
+          <ISSN IssnType="Electronic">1472-3263</ISSN>
+          <JournalIssue CitedMedium="Internet">
+            <Volume>90</Volume>
+            <Issue>2</Issue>
+            <PubDate>
+              <Year>2014</Year>
+              <Month>Mar</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Sexually transmitted infections</Title>
+          <ISOAbbreviation>Sex Transm Infect</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>An early evaluation of clinical and economic costs and benefits of implementing point of care NAAT tests for Chlamydia trachomatis and Neisseria gonorrhoea in genitourinary medicine clinics in England.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>104-11</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1136/sextrans-2013-051147</ELocationID>
+        <Abstract>
+          <AbstractText Label="OBJECTIVES" NlmCategory="OBJECTIVE">To estimate the costs and benefits of clinical pathways incorporating a point of care (POC) nucleic acid amplification test (NAAT) for chlamydia and gonorrhoea in genitourinary medicine (GUM) clinics compared with standard off-site laboratory testing.</AbstractText>
+          <AbstractText Label="METHOD" NlmCategory="METHODS">We simulated 1.2 million GUM clinic attendees in England. A simulation in Microsoft Excel was developed to compare existing standard pathways of management for chlamydia and gonorrhoea with a POC NAAT. We conducted scenario analyses to evaluate the robustness of the model findings. The primary outcome was the incremental cost-effectiveness ratio. Secondary outcomes included the number of inappropriate treatments, complications and transmissions averted.</AbstractText>
+          <AbstractText Label="RESULTS" NlmCategory="RESULTS">The baseline cost of using the point of POC NAAT was £103.9 million compared with £115.6 million for standard care. The POC NAAT was also associated with a small increase of 46 quality adjusted life years, making the new test both more effective and cheaper. Over 95 000 inappropriate treatments might be avoided by using a POC NAAT. Patients receive diagnosis and treatment on the same day as testing, which may also prevent 189 cases of pelvic inflammatory disease and 17 561 onward transmissions annually.</AbstractText>
+          <AbstractText Label="DISCUSSION" NlmCategory="CONCLUSIONS">Replacing standard laboratory tests for chlamydia and gonorrhoea with a POC test could be cost saving and patients would benefit from more accurate diagnosis and less unnecessary treatment. Overtreatment currently accounts for about a tenth of the reported treatments for chlamydia and gonorrhoea and POC NAATs would effectively eliminate the need for presumptive treatment.</AbstractText>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Turner</LastName>
+            <ForeName>Katherine M E</ForeName>
+            <Initials>KM</Initials>
+            <AffiliationInfo>
+              <Affiliation>School of Social &amp; Community Medicine, University of Bristol, , Bristol, UK.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Round</LastName>
+            <ForeName>Jeff</ForeName>
+            <Initials>J</Initials>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Horner</LastName>
+            <ForeName>Patrick</ForeName>
+            <Initials>P</Initials>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Macleod</LastName>
+            <ForeName>John</ForeName>
+            <Initials>J</Initials>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Goldenberg</LastName>
+            <ForeName>Simon</ForeName>
+            <Initials>S</Initials>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Deol</LastName>
+            <ForeName>Arminder</ForeName>
+            <Initials>A</Initials>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Adams</LastName>
+            <ForeName>Elisabeth J</ForeName>
+            <Initials>EJ</Initials>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <GrantList CompleteYN="Y">
+          <Grant>
+            <GrantID>PDF-2009-02-55</GrantID>
+            <Acronym>DH_</Acronym>
+            <Agency>Department of Health</Agency>
+            <Country>United Kingdom</Country>
+          </Grant>
+        </GrantList>
+        <PublicationTypeList>
+          <PublicationType UI="D023362">Evaluation Study</PublicationType>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+          <PublicationType UI="D013485">Research Support, Non-U.S. Gov't</PublicationType>
+        </PublicationTypeList>
+        <ArticleDate DateType="Electronic">
+          <Year>2013</Year>
+          <Month>11</Month>
+          <Day>22</Day>
+        </ArticleDate>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>Sex Transm Infect</MedlineTA>
+        <NlmUniqueID>9805554</NlmUniqueID>
+        <ISSNLinking>1368-4973</ISSNLinking>
+      </MedlineJournalInfo>
+      <CitationSubset>IM</CitationSubset>
+      <CommentsCorrectionsList>
+        <CommentsCorrections RefType="CommentIn">
+          <RefSource>Sex Transm Infect. 2014 Mar;90(2):82</RefSource>
+          <PMID Version="1">24431187</PMID>
+        </CommentsCorrections>
+      </CommentsCorrectionsList>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D002690" MajorTopicYN="N">Chlamydia Infections</DescriptorName>
+          <QualifierName UI="Q000175" MajorTopicYN="Y">diagnosis</QualifierName>
+          <QualifierName UI="Q000191" MajorTopicYN="N">economics</QualifierName>
+          <QualifierName UI="Q000453" MajorTopicYN="N">epidemiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D002692" MajorTopicYN="N">Chlamydia trachomatis</DescriptorName>
+          <QualifierName UI="Q000302" MajorTopicYN="Y">isolation &amp; purification</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D003362" MajorTopicYN="N">Cost-Benefit Analysis</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D004739" MajorTopicYN="N" Type="Geographic">England</DescriptorName>
+          <QualifierName UI="Q000453" MajorTopicYN="N">epidemiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005260" MajorTopicYN="N">Female</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D006069" MajorTopicYN="N">Gonorrhea</DescriptorName>
+          <QualifierName UI="Q000175" MajorTopicYN="Y">diagnosis</QualifierName>
+          <QualifierName UI="Q000191" MajorTopicYN="N">economics</QualifierName>
+          <QualifierName UI="Q000453" MajorTopicYN="N">epidemiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D006801" MajorTopicYN="N">Humans</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D008297" MajorTopicYN="N">Male</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D009344" MajorTopicYN="N">Neisseria gonorrhoeae</DescriptorName>
+          <QualifierName UI="Q000302" MajorTopicYN="Y">isolation &amp; purification</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D021141" MajorTopicYN="Y">Nucleic Acid Amplification Techniques</DescriptorName>
+          <QualifierName UI="Q000191" MajorTopicYN="N">economics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D019095" MajorTopicYN="Y">Point-of-Care Systems</DescriptorName>
+          <QualifierName UI="Q000191" MajorTopicYN="N">economics</QualifierName>
+          <QualifierName UI="Q000592" MajorTopicYN="N">standards</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D012680" MajorTopicYN="N">Sensitivity and Specificity</DescriptorName>
+        </MeshHeading>
+      </MeshHeadingList>
+      <KeywordList Owner="NOTNLM">
+        <Keyword MajorTopicYN="N">Chlamydia Trachomatis</Keyword>
+        <Keyword MajorTopicYN="N">Cost-Effectiveness</Keyword>
+        <Keyword MajorTopicYN="N">Diagnosis</Keyword>
+        <Keyword MajorTopicYN="N">Gonorrhoea</Keyword>
+        <Keyword MajorTopicYN="N">Mathematical Model</Keyword>
+      </KeywordList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>2013</Year>
+          <Month>11</Month>
+          <Day>26</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>2013</Year>
+          <Month>11</Month>
+          <Day>26</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>2014</Year>
+          <Month>4</Month>
+          <Day>23</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">24273127</ArticleId>
+        <ArticleId IdType="pii">sextrans-2013-051147</ArticleId>
+        <ArticleId IdType="doi">10.1136/sextrans-2013-051147</ArticleId>
+        <ArticleId IdType="pmc">PMC3932743</ArticleId>
+      </ArticleIdList>
+      <ReferenceList>
+        <Reference>
+          <Citation>Sex Transm Dis. 2008 Mar;35(3):307-11</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">18032995</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Sex Transm Infect. 2011 Jun;87(4):312-7</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">21444333</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>BMC Public Health. 2006 Apr 25;6:106</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">16638147</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>J Clin Microbiol. 2012 Dec;50(12):3867-9</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">22993183</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Sex Transm Infect. 2013 Mar;89(2):108-14</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">22984085</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Clin Infect Dis. 2011 Dec;53 Suppl 3:S129-42</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">22080266</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Sex Transm Infect. 2012 Apr;88(3):154-6</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">22416272</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>PLoS One. 2013 Apr 08;8(4):e61481</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">23593483</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Health Technol Assess. 2010 Jun;14(29):1-97, iii-iv</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">20557810</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Sex Transm Dis. 1999 Apr;26(4):232-40</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">10225593</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>BMC Health Serv Res. 2011 Feb 09;11:30</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">21306604</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Am J Epidemiol. 2013 Aug 1;178(3):484-92</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">23813703</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>J R Soc Interface. 2012 Jan 7;9(66):136-46</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">21653569</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Int J STD AIDS. 2011 Oct;22(10):541-7</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">21998172</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Sex Transm Dis. 2008 Feb;35(2):119-23</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">17898680</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Sex Transm Infect. 2013 Jun;89(4):320-6</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">23093736</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Sex Transm Infect. 2003 Oct;79(5):363-7</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">14573829</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>BMJ. 2007 Dec 8;335(7631):1190-4</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">18055487</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Sex Transm Infect. 2013 Mar;89(2):88-9</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">23423334</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>J Clin Microbiol. 2013 Jun;51(6):1666-72</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">23467600</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>PLoS One. 2011 Apr 29;6(4):e19263</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">21559435</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Sex Transm Infect. 2007 Jul;83(4):267-74; discussion 274-5</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">17475686</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Philos Trans R Soc Lond B Biol Sci. 1999 Apr 29;354(1384):787-97</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">10365404</ArticleId>
+          </ArticleIdList>
+        </Reference>
+      </ReferenceList>
+    </PubmedData>
+  </PubmedArticle>
+</PubmedArticleSet>
