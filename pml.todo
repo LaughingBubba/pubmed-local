@@ -1,0 +1,25 @@
+Basic steps:
+  ☐ Intial (Base) FTP from main site
+  ☐ Download (updates) from FTP 
+  ☐ Track files
+  ☐ process in sequence
+    ☐ download zip
+    ☐ download md5
+    ☐ validate zip with md5
+    ingest files in sequence (md5 must have been checked):
+      ☐ parse xml to JSON
+      for each article:
+        ☐ load to Solr
+        ☐ load to mongo
+
+Golang - Todo Do:
+  ☐ Read FTP files list 
+  ☐ Store FTP files list
+  ☐ Sync from FTP files list
+  ☐ update SQLite DB with FTP file status
+  ☐ parse XML use ./articles_sample.xml
+  read/write environment variables per node
+  create a binary / command that:
+    ☐ initialises project folder and defaults configs
+    ☐ runs the intial FTP of BASE or
+    ☐ runs the update of the FTP 
